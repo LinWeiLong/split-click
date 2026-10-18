@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Split Click 设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="header">
+        <img class="logo" src="icons/icon48.png" alt="" width="40" height="40" />
+        <div>
+          <h1>Split Click</h1>
+          <p class="tagline">修饰键 + 左键点击链接 → 在原生分屏中打开</p>
+        </div>
+      </header>
+
+      <form id="settings-form" class="form">
+        <fieldset>
+          <legend>触发方式</legend>
+          <p class="hint">
+            「单击直接打开」只在<strong>已经处于分屏</strong>时生效；未分屏时普通单击始终原生跳转，需 Alt（修饰键）才会新建分屏。
+          </p>
+          <label class="toggle">
+            <input type="checkbox" id="plainClickOpen" name="plainClickOpen" />
+            <span>已分屏时：单击直接在另一侧打开</span>
+          </label>
+          <p class="hint tip">
+            <strong>开启且已分屏：</strong>普通单击 → 按下方「已处于分屏时」打开（默认另一侧）；
+            按住修饰键（默认 Alt）单击 → 在<strong>当前这一侧</strong>打开（拦截 Chrome 的 Alt+另存为）。<br />
+            <strong>未分屏时（无论是否开启）：</strong>普通单击 → 原生跳转；Alt+单击 → 新建右侧分屏。<br />
+            Ctrl/Cmd+点击、中键始终原生。
+          </p>
+        </fieldset>
+
+        <fieldset>
+          <legend>修饰键组合</legend>
+          <p class="hint">
+            至少勾选一个。默认仅 Alt。
+            未分屏时：用此组合新建分屏。
+            已分屏且开启「单击直接打开」时：此组合改为「当前这一侧打开」。
+            已分屏但关闭该选项时：此组合仍走下方「已处于分屏时」分屏逻辑。
+            请勿把 Ctrl/Meta 设为唯一修饰键（需保留原生后台打开标签）。
+          </p>
+          <div class="checks" role="group" aria-label="修饰键">
+            <label><input type="checkbox" name="mod" value="alt" /> Alt</label>
+            <label><input type="checkbox" name="mod" value="ctrl" /> Ctrl</label>
+            <label><input type="checkbox" name="mod" value="shift" /> Shift</label>
+            <label><input type="checkbox" name="mod" value="meta" /> Meta（⌘ / Win）</label>
+          </div>
+          <p id="mod-error" class="error" hidden>请至少选择一个修饰键。</p>
+        </fieldset>
+
+        <fieldset>
+          <legend>已处于分屏时，链接打开到哪里</legend>
+          <p class="hint">
+            决定「分屏触发」（普通单击开启时，或关闭单击时的修饰键触发）加载到哪一侧。
+          </p>
+          <label class="radio">
+            <input type="radio" name="whenAlreadySplit" value="otherPane" />
+            <span>另一侧（默认）— 更新同组分屏的另一标签页</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="whenAlreadySplit" value="currentPane" />
+            <span>原地（当前侧）— 仅更新当前标签页，不动另一侧</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="whenAlreadySplit" value="alwaysNew" />
+            <span>始终新建分屏（若 API 约束失败则退化为右侧新建标签）</span>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>启用状态</legend>
+          <label class="toggle">
+            <input type="checkbox" id="enabled" name="enabled" />
+            <span>启用 Split Click（也可通过工具栏图标切换）</span>
+          </label>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" id="save">保存</button>
+          <span id="status" class="status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <section class="notes">
+        <h2>使用说明</h2>
+        <ul>
+          <li>未分屏：普通单击 = 原生；<kbd>Alt</kbd>+单击 = 新建右侧分屏。</li>
+          <li>已分屏 +「单击直接打开」：普通单击 → 另一侧；Alt+单击 → 当前侧（非另存为）。</li>
+          <li>需要 Chrome 155+；更低版本会退化为在右侧新建标签页。</li>
+        </ul>
+      </section>
+    </main>
+    <script src="settings.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
